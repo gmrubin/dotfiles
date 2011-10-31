@@ -263,7 +263,7 @@
           '(lambda ()
              (local-set-key "\C-xw" confluence-prefix-map)))
 
-;; added by gmrubin on 10-20-11 - setup compile from file as per http://www.cs.unc.edu/~gb/blog/2008/03/15/running-python-from-within-emacs/ 
+;; COMPILE SHORTCUT - added by gmrubin on 10-20-11 - setup compile from file as per http://www.cs.unc.edu/~gb/blog/2008/03/15/running-python-from-within-emacs/ 
 (defun my-compile ()
   "Use compile to run python programs"
   (interactive)
@@ -273,3 +273,8 @@
 (add-hook 'python-mode-hook
           '(lambda ()
              (local-set-key "\C-c\C-c" 'my-compile)))
+
+;;;; PHP MODE - added by gmrubin on 10-31-11
+(load "php-mode")
+(add-to-list 'auto-mode-alist
+     	     '("\\.php[34]?\\'\\|\\.phtml\\'" . php-mode))
