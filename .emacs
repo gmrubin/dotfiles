@@ -3,9 +3,18 @@
 ;;; Emacs Load Path
 (setq load-path (cons "~/.emacs.d" load-path))
 
-(server-start)
-(require 'edit-server)
-(edit-server-start)
+;;; Try and prevent annoying pop-up when runnign multiple servers (GR)
+(if (file-exists-p
+ (concat (getenv "TMPDIR") "emacs"
+         (number-to-string
+          (user-real-uid)) "/server"))
+nil (server-start))
+
+
+;;;GR commented this section out because .emacs file was not loading when laptop was not connected to a monitor
+;;;(server-start)
+;;(require 'edit-server)
+;;(edit-server-start)
 
 (menu-bar-mode 0)
 
@@ -47,7 +56,9 @@
 (load "color-theme-twilight")
 (if window-system
     (color-theme-twilight)
-  (color-theme-charcoal-black))
+  (color-theme-twilight))
+
+
 
 (add-hook 'find-file-hook 'auto-revert-mode)
 
@@ -274,7 +285,52 @@
           '(lambda ()
              (local-set-key "\C-c\C-c" 'my-compile)))
 
-;;;; PHP MODE - added by gmrubin on 10-31-11
+;; PHP MODE - added by gmrubin on 10-31-11
 (load "php-mode")
 (add-to-list 'auto-mode-alist
      	     '("\\.php[34]?\\'\\|\\.phtml\\'" . php-mode))
+
+;;;-----------------------------------------------------------------------------------------------
+;;; ansi-term stuff
+;;; http://pages.physics.cornell.edu/~myers/teaching/ComputationalMethods/python/ipython.html
+
+(require 'term)
+(defun visit-ansi-term ()
+  "If the current buffer is:
+     1) a running ansi-term named *ansi-term*, rename it.
+     2) a stopped ansi-term, kill it and create a new one.
+     3) a non ansi-term, go to an already running ansi-term
+        or start a new one while killing a defunt one"
+  (interactive)
+  (let ((is-term (string= "term-mode" major-mode))
+        (is-running (term-check-proc (buffer-name)))
+        (term-cmd "/bin/bash")
+        (anon-term (get-buffer "*ansi-term*")))
+    (if is-term
+        (if is-running
+            (if (string= "*ansi-term*" (buffer-name))
+                (call-interactively 'rename-buffer)
+              (if anon-term
+                  (switch-to-buffer "*ansi-term*")
+                (ansi-term term-cmd)))
+          (kill-buffer (buffer-name))
+          (ansi-term term-cmd))
+      (if anon-term
+          (if (term-check-proc "*ansi-term*")
+              (switch-to-buffer "*ansi-term*")
+            (kill-buffer "*ansi-term*")
+            (ansi-term term-cmd))
+        (ansi-term term-cmd)))))
+(global-set-key (kbd "<f2>") 'visit-ansi-term)
+
+;;;-----------------------------------------------------------------------------------------------
+;;; ansi-color stuff
+;;; http://tapoueh.org/blog/2011/07/29-emacs-ansi-colors.html
+
+(require 'ansi-color)
+  (setq ansi-color-names-vector
+        (vector (frame-parameter nil 'background-color)
+              "#8F9D6A" "#8ae234" "#edd400" "#729fcf"
+              "#729FCF" "cyan3" "#8F9D6A")
+        ansi-term-color-vector ansi-color-names-vector
+        ansi-color-map (ansi-color-make-color-map))

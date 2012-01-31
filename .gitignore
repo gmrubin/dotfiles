@@ -1,0 +1,12 @@
+bin
+build
+include
+lib
+.Python
+*.pyc
+*~
+
+
+
+
+
