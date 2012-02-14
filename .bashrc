@@ -124,8 +124,21 @@ alias tpython='python -ic "import readline;import rlcompleter;readline.parse_and
 
 export PIP_DOWNLOAD_CACHE=$HOME/.pip_cache
 
+# venvwrapper per http://www.doughellmann.com/docs/virtualenvwrapper/install.html#shell-startup-file
 export WORKON_HOME=$HOME/.envs
 export PROJECT_HOME=$HOME/sites
 source /usr/local/bin/virtualenvwrapper.sh
 
 
+# mkdjango function to clone a skeleton
+
+mkdjango () {
+    mkproject --no-site-packages --prompt=$1: $1 &&
+    git init &&
+    git pull git://github.com/jordanorelli/Django-Skeleton.git master &&
+    rm README.markdown &&
+    pip install -r requirements.txt &&
+    ./manage.py new_secret &&
+    ./manage.py syncdb &&
+    ./manage.py runserver
+}
