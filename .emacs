@@ -334,3 +334,10 @@ nil (server-start))
               "#729FCF" "cyan3" "#8F9D6A")
         ansi-term-color-vector ansi-color-names-vector
         ansi-color-map (ansi-color-make-color-map))
+
+;;;-----------------------------------------------------------------------------------------------
+;;; mouse-wheel zoom
+;;; http://stackoverflow.com/questions/5533110/emacs-zoom-in-zoom-out
+
+(global-set-key [C-mouse-4] 'text-scale-increase)
+(global-set-key [C-mouse-5] 'text-scale-decrease)
