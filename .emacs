@@ -348,3 +348,11 @@ nil (server-start))
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+
+;;;-----------------------------------------------------------------------------------------------
+;;; haml-mode
+;;; https://github.com/nex3/haml-mode
+
+(add-to-list 'load-path "~/.emacs.d/haml-mode/")
+(require 'haml-mode)
+
