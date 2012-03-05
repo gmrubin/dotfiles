@@ -341,3 +341,10 @@ nil (server-start))
 
 (global-set-key [C-mouse-4] 'text-scale-increase)
 (global-set-key [C-mouse-5] 'text-scale-decrease)
+
+;;;-----------------------------------------------------------------------------------------------
+;;; yaml-mode
+;;; https://github.com/yoshiki/yaml-mode
+
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
